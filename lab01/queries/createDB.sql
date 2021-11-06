@@ -1,0 +1,2 @@
+DROP DATABASE IF EXISTS board_games;
+CREATE DATABASE board_games;
