@@ -44,18 +44,17 @@ CREATE TABLE IF NOT EXISTS board_game_events (
     title TEXT NOT NULL,
     eventDate DATE NOT NULL,
     startTime TIME,
-    endTime TIME,
+    duration INT CHECK (duration BETWEEN 1 AND 24),
     playersNum INT CHECK (playersNum >= 0) DEFAULT 0 NOT NULL,
     purchase BOOLEAN NOT NULL,
-    FOREIGN KEY (venueID) REFERENCES venue(id),
-    FOREIGN KEY (organizerID) REFERENCES organizer(id),
-    CHECK (endTime > startTime)
+    FOREIGN KEY (venueID) REFERENCES venues(id),
+    FOREIGN KEY (organizerID) REFERENCES organizers(id)
 );
 
 CREATE TABLE IF NOT EXISTS game_event (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     eventID UUID,
     gameID UUID,
-    FOREIGN KEY (eventID) REFERENCES board_game_event(id),
-    FOREIGN KEY (gameID) REFERENCES board_game(id)
+    FOREIGN KEY (eventID) REFERENCES board_game_events(id),
+    FOREIGN KEY (gameID) REFERENCES board_games(id)
 );
