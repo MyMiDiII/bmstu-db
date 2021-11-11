@@ -127,6 +127,7 @@ def generateEvents(faker):
                     faker.time()[:-4] + '0:00',
                     random.randint(1, 24),
                     random.randint(0, 500),
+                    random.randint(0, 30),
                     bool(random.randint(0, 1))
                 ]
             )
