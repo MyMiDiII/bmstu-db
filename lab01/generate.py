@@ -94,6 +94,8 @@ def generateOrganizers(faker):
 
         for i in range(ROWNUM1):
             id = faker.unique.uuid4()
+            possible_parents = ['null'] * 100 + organizersIDs
+            random.shuffle(possible_parents)
 
             writer.writerow(
                 [
@@ -103,7 +105,8 @@ def generateOrganizers(faker):
                     faker.year(),
                     faker.e164(),
                     faker.url(),
-                    faker.company_email()
+                    faker.company_email(),
+                    random.choice(possible_parents)
                 ]
             )
 

@@ -8,7 +8,7 @@ DELIMITER ',' CSV;
 
 COPY organizers
 FROM '/var/lib/postgres/data/csv/organizers.csv'
-DELIMITER ',' CSV;
+DELIMITER ',' NULL AS 'null' CSV;
 
 COPY board_game_events
 FROM '/var/lib/postgres/data/csv/board_game_events.csv'
