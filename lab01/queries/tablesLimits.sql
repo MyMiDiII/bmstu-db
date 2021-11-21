@@ -18,7 +18,8 @@ ADD CHECK (min_playing_time > 0),
 ADD CHECK (max_playing_time > 0),
 ADD CHECK (min_age <= max_age),
 ADD CHECK (min_players_num <= max_players_num),
-ADD CHECK (min_playing_time <= max_playing_time);
+ADD CHECK (min_playing_time <= max_playing_time),
+ADD UNIQUE (title);
 
 ALTER TABLE venues
 ALTER COLUMN venue_id SET DEFAULT uuid_generate_v4(),

@@ -31,7 +31,8 @@ CREATE TABLE IF NOT EXISTS organizers (
     founding_year INT,
     phone TEXT,
     site TEXT,
-    email TEXT
+    email TEXT,
+    parent_org UUID REFERENCES organizers(org_id)
 );
 
 CREATE TABLE IF NOT EXISTS board_game_events (
