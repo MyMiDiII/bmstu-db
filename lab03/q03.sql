@@ -51,3 +51,20 @@ SELECT *
 FROM board_game_events;
 
 DROP TABLE board_game_events CASCADE;
+
+CREATE TABLE IF NOT EXISTS board_game_events (
+    event_id UUID PRIMARY KEY,
+    venue_id UUID,
+    org_id UUID,
+    title TEXT,
+    event_date DATE,
+    start_time TIME,
+    duration INT,
+    players_num INT,
+    games_num INT,
+    purchase BOOLEAN
+);
+
+COPY board_game_events
+FROM '/var/lib/postgres/data/csv/board_game_events.csv'
+DELIMITER ',' CSV;

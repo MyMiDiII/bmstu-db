@@ -44,11 +44,12 @@ VALUES ('Owl-cafe', 'cafe', 'Orel', '+79084568765', 'https://owlcafe.ru', 'help@
 
 
 -- вспомогательные
-DROP TRIGGER insert_correct_type ON venue_view;
+SELECT *
+FROM venue_view
+WHERE venue_name = 'Owl-cafe';
 
 DELETE FROM venues
 WHERE venue_name = 'Owl-cafe';
 
-SELECT *
-FROM venue_view
-WHERE venue_name = 'Owl-cafe';
+DROP TRIGGER insert_correct_type ON venue_view;
+DROP VIEW venue_view;

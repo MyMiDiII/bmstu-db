@@ -2,7 +2,7 @@
 -- обновление количества игр
 -- при вставке в game_event
 
-CREATE OR REPLACE FUNCTION update_games_num()
+CREATE OR REPLACE FUNCTION inc_games_num()
 RETURNS TRIGGER
 LANGUAGE plpgsql
 AS $$
@@ -17,7 +17,7 @@ $$
 
 CREATE TRIGGER new_event_game
 AFTER INSERT ON game_event
-FOR ROW EXECUTE PROCEDURE update_games_num();
+FOR ROW EXECUTE PROCEDURE inc_games_num();
 
 INSERT INTO game_event (event_id, game_id)
 VALUES
@@ -32,7 +32,7 @@ SELECT * FROM board_game_events WHERE event_id = 'edf2acde-f147-47bb-9243-929c5f
 SELECT * FROM game_event WHERE event_id = 'edf2acde-f147-47bb-9243-929c5ff9e05d';
 
 DROP TRIGGER IF EXISTS new_event_game ON game_event;
-DROP FUNCTION IF EXISTS update_games_num;
+DROP FUNCTION IF EXISTS inc_games_num;
 
 DELETE FROM game_event
 WHERE event_id = 'edf2acde-f147-47bb-9243-929c5ff9e05d';
