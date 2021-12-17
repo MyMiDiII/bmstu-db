@@ -209,3 +209,70 @@ class BoardGamesDB:
         self.__cur.execute(query)
         self.__saveRes()
 
+    def addEvent(self):
+        print("Создание игротеки")
+
+        query = """
+                CREATE TEMP TABLE IF NOT EXISTS json_tab(json_t json);
+                """
+
+        self.__cur.execute(query)
+        self.__con.commit()
+
+        query = """
+                COPY json_tab FROM '/var/lib/postgres/data/event.json';
+                """
+
+        self.__cur.execute(query)
+        self.__con.commit()
+
+        query = """
+        CREATE TEMP TABLE IF NOT EXISTS bge_type (
+            event_id UUID PRIMARY KEY,
+            venue_id UUID,
+            org_id UUID,
+            title TEXT,
+            event_date DATE,
+            start_time TIME,
+            duration INT,
+            players_num INT,
+            games_num INT,
+            purchase BOOLEAN,
+            games json
+        );
+        """
+
+        self.__cur.execute(query)
+        self.__con.commit()
+
+        query = """
+                INSERT INTO board_game_events (venue_id, org_id, title,
+                        event_date, start_time, duration, players_num,
+                        games_num, purchase)
+                SELECT j.venue_id, j.org_id, j.title, j.event_date,
+                       j.start_time, j.duration, j.players_num, j.games_num,
+                       j.purchase
+                FROM json_tab CROSS JOIN LATERAL
+                     json_populate_record(null::bge_type, json_t) as j
+                """
+
+        self.__cur.execute(query)
+        self.__con.commit()
+
+        query = """
+                INSERT INTO game_event (event_id, game_id)
+                SELECT (SELECT event_id
+                        FROM board_game_events
+                        WHERE title = (SELECT json_t->>'title'
+                                       FROM json_tab)
+                        LIMIT 1
+                        ),
+                        (p->>'game_id')::uuid
+                FROM json_tab
+                CROSS JOIN
+                LATERAL
+                json_array_elements(json_t->'games') as p
+                """
+
+        self.__cur.execute(query)
+        self.__con.commit()
