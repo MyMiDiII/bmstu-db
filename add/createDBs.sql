@@ -1,0 +1,3 @@
+CREATE DATABASE add2;
+
+SELECT 1;
